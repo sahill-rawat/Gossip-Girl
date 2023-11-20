@@ -116,13 +116,13 @@ const Header = () => {
         currentUser ? (
           <VStack>
             <Link to={"/"}>
-              <Button variant={"ghost"}>Home</Button>
+              <Button onClick={onClose} variant={"ghost"}>Home</Button>
             </Link>
             <Link to={"/message"}>
-              <Button variant={"ghost"}>Message</Button>
+              <Button onClick={onClose} variant={"ghost"}>Message</Button>
             </Link>
             <Link to="/profile">
-              <Button variant={"ghost"}>Me</Button>
+              <Button onClick={onClose} variant={"ghost"}>Me</Button>
             </Link>
             <Link to={"/logout"}>
                 <Button
@@ -141,13 +141,13 @@ const Header = () => {
         ) : (
           <VStack>
             <Link to={"/"}>
-              <Button variant={"ghost"}>Home</Button>
+              <Button onClick={onClose} variant={"ghost"}>Home</Button>
             </Link>
             <Link to={"/login"}>
-              <Button bg='black' color='white' variant={"ghost"}>Login</Button>
+              <Button onClick={onClose} bg='black' color='white' variant={"ghost"}>Login</Button>
             </Link>
             <Link to={"/signup"}>
-              <Button bg='black' color='white' variant={"ghost"}>Signup</Button>
+              <Button onClick={onClose} bg='black' color='white' variant={"ghost"}>Signup</Button>
             </Link>
           </VStack>
         )
