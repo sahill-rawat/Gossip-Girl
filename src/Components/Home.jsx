@@ -1,10 +1,12 @@
 import { Box, Heading, Image, Stack, Text, VStack } from '@chakra-ui/react'
 import React, { useState, useEffect } from 'react';
+import { useAuth } from '../Auth';
 import bg from '../images/bg.jpg';
 import Footer from './Footer';
 
 const Home = () => {
 
+  const { currentUser } = useAuth();
   const [width, setWidth] = useState(window.innerWidth);
 
   useEffect(()=>{
@@ -36,27 +38,27 @@ const Home = () => {
     backgroundSize="contain">
     </VStack>
 
-    <VStack bg='blackAlpha.900' mt='10vh'>
+    {currentUser && (<VStack bg='blackAlpha.900' mt='10vh'>
       {posts.map((post,  index)=> (
-        <Stack flexDir={width >= 700 ? "row" : "column"} justify='space-evenly' align={'center'} spacing='5' h='75vh' w='80vw'>
+        <Stack key={index} pt='10' pb='10' flexDir={width >= 700 ? "row" : "column"} justify='space-evenly' align={'center'} spacing='5' h='75vh' w='80vw'>
           
           <Stack
-          h={width >= 700 ? "80%" : "60%"}
-           w={width >= 700 ? "60%" : "80%"}
+           h={width >= 700 ? "70%" : "60%"}
+           w={width >= 700 ? "40%" : "80%"}
            borderRadius='15px'
            bg='white' 
            justify={'center'}
            align='center'
            >
-            <Image borderRadius='5px'  w={width >= 700 ? "50%" : "90%"} objectFit={'contain'} src={post.link}></Image>
+            <Image borderRadius='5px' h='auto'  w={width >= 700 ? "80%" : "90%"} objectFit={'contain'} src={post.link}></Image>
           </Stack>
           <VStack w={width >= 700 ? "40%" : "80%"} h={width >= 700 ? "40%" : "35%"} align={'flex-start'} color='white'>
             <Heading>e-blast</Heading>
-            <Text  overflowY={'auto'} fontSize="max('1rem', '19cqi')" fontWeight='medium' align={'left'}>{post.text}</Text>
+            <Text overflowY={'auto'} fontSize="max('1rem', '19cqi')" fontWeight='medium' align={'left'}>{post.text}</Text>
           </VStack>
         </Stack>
       ))}
-    </VStack>
+    </VStack>)}
 
     <Footer/>
     </Box>

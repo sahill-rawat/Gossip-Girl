@@ -43,9 +43,9 @@ const Header = () => {
   }, []);
 
   return (
-    <HStack justifyContent={"space-between"} h="10vh" p='2'>
+    <HStack justifyContent={"space-between"} h="10vh" pl='2'>
       <HStack >
-        <Heading>GossipGirl</Heading>
+        <Heading onClick={()=>navigate('/')}>GossipGirl</Heading>
       </HStack>
       {width >= 450 ? (
         currentUser ? (
@@ -93,7 +93,7 @@ const Header = () => {
             w="10"
             h="10"
             borderRadius={"full"}
-            position={"fixed"}
+            position={"absolute"}
             top={4}
             right={4}
             bg="black"

@@ -1,20 +1,23 @@
 import {
+  Button,
   HStack,
   Text,
   VStack,
 } from "@chakra-ui/react";
+import { IoArrowUpCircle } from "react-icons/io5";
 import React from "react";
 
 const Footer = () => {
   return (
-    <VStack bg='blackAlpha.900'>
-      <HStack h='5vh' w='100vw' bg='white'></HStack>
-      <Text color='white' fontWeight='black' textAlign='center'>
-        Gossip Girl here, <br/> your one and only <br/>source into the scandalous lives of <br/>
-        Manhattan's elite.<br/> Who am I? <br/>That's one secret I'll never tell. <br/>You know
+    <VStack bg='whiteAlpha.900' h='20vh' w='100vw' justify={'center'}>
+
+      <HStack h='10vh' p='4' w={'100vw'} align='center' justify={'space-between'}>
+      <Text fontWeight='black' textAlign='center'>
+        You know
         you love me.<br/> XOXO <br/> Gossip Girl
       </Text>
-      <HStack h='5vh' w='100vw' bg='white'></HStack>
+      <Button display={'flex'} h='10vh' w='10vh' borderRadius={'50%'} variant='unstyled' bg='none' onClick={()=>window.scrollTo(0, 0)}><IoArrowUpCircle size='10vh' /></Button>
+      </HStack>
     </VStack>
   );
 };

@@ -28,7 +28,7 @@ import { toast } from "react-hot-toast";
       signUp(email, password, name)
         .then(() => {
           updateName(name);
-          navigate("/diary");
+          navigate("/home");
         })
         .catch((error) => {
           toast.error(error.message);
