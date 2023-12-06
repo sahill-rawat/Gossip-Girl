@@ -12,6 +12,7 @@ import {
 //   import MetaData from './Metadata';
   import { useAuth } from '../Auth';
 import { toast } from "react-hot-toast";
+import { useStore } from "../Store";
 // import ColorModeSwitcher from "../ColorModeSwitcher";
 
   const Signup = () => {
@@ -21,14 +22,16 @@ import { toast } from "react-hot-toast";
     const [email, setEmail] = useState();
     const [password, setPassword] = useState();
     const {signUp, updateName} = useAuth();
+    const { addUser } = useStore();
 
   
     const handleRegister = (e) => {
       e.preventDefault();
       signUp(email, password, name)
-        .then(() => {
+        .then((data) => {
+          addUser(name);
           updateName(name);
-          navigate("/home");
+          navigate("/");
         })
         .catch((error) => {
           toast.error(error.message);

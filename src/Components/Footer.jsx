@@ -16,7 +16,7 @@ const Footer = () => {
         You know
         you love me.<br/> XOXO <br/> Gossip Girl
       </Text>
-      <Button display={'flex'} h='10vh' w='10vh' borderRadius={'50%'} variant='unstyled' bg='none' onClick={()=>window.scrollTo(0, 0)}><IoArrowUpCircle size='10vh' /></Button>
+      <Button display={'flex'} h='10vh' w='10vh' borderRadius={'50%'} variant='unstyled' bg='none' onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}><IoArrowUpCircle size='10vh' /></Button>
       </HStack>
     </VStack>
   );

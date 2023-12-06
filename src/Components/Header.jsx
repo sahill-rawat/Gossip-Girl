@@ -59,7 +59,7 @@ const Header = () => {
             <Link to="/profile">
               <Button variant={"ghost"}>Me</Button>
             </Link>
-            <Link to={"/logout"}>
+            <Link to={"/"}>
                 <Button
                   onClick={() => {
                     onClose();
@@ -124,7 +124,7 @@ const Header = () => {
             <Link to="/profile">
               <Button onClick={onClose} variant={"ghost"}>Me</Button>
             </Link>
-            <Link to={"/logout"}>
+            <Link to={"/"}>
                 <Button
                   onClick={() => {
                     onClose();

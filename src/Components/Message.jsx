@@ -12,47 +12,55 @@ import { useEffect } from "react";
 import { useState } from "react";
 import { useAuth } from "../Auth";
 import { RiArrowGoBackFill } from "react-icons/ri";
+import UserFinder from "./UserFinder";
+import { useStore } from "../Store";
+import { collection, onSnapshot, orderBy, query } from "firebase/firestore";
+import { db } from "../firebase";
+import { useRef } from "react";
 
 const Message = () => {
-  const [display, setDisplay] = useState(true);
-  const { currentUser } = useAuth();
-  const [friend, setFriend] = useState("");
-  const [text, setText] = useState("");
-  const options = ["Sahil", "Rawat", "David", "Tenzin"];
-  const messages = [
-    {
-      name: "Sahil",
-      text: "Hii Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quaerat et sed ducimus maxime error assumenda perspiciatis quis inventore, vel nostrum totam animi quas laborum molestiae, placeat, vitae quisquam ab! Pariatur!",
-    },
-    { name: "Tenzin", text: "Hello" },
-    { name: "Sahil", text: "Hii" },
-    { name: "Tenzin", text: "Hello" },
-    { name: "Sahil", text: "Hii" },
-    { name: "Tenzin", text: "Hello" },
-    { name: "Sahil", text: "Hii" },
-    { name: "Tenzin", text: "Hello" },
-    { name: "Sahil", text: "Hii" },
-    { name: "Tenzin", text: "Hello" },
-    { name: "Sahil", text: "Hii" },
-    { name: "Tenzin", text: "Hello" },
-    { name: "Sahil", text: "Hii" },
-    { name: "Tenzin", text: "Hello" },
-    { name: "Sahil", text: "Hii" },
-    { name: "Tenzin", text: "Hello" },
-    { name: "Sahil", text: "Hii" },
-    { name: "Tenzin", text: "Hello" },
-  ];
 
+  const [key, setKey] = useState(null); 
+  const chatBoxRef = useRef();
+  const { currentUser } = useAuth();
+  const { sendMessage, getMessage, findFriends } = useStore();
+  const [text, setText] = useState("");
+  const [friend, setFriend] = useState(null);
+  const [display, setDisplay] = useState(true);
+  const [chat, setChat] = useState(null);
+  const [friends, setFriends] = useState(null);
   const [width, setWidth] = useState(window.innerWidth);
 
   useEffect(() => {
     if (width <= 450 && !display) {
       window.scrollTo(0, window.innerHeight);
-    }
-    else if (display) {
+    } else if (display) {
       window.scrollTo(0, 0);
     }
   }, [display]);
+
+  useEffect(() => {
+      if (width <= 450) {
+        setDisplay((prev) => !prev);
+      }
+      if (friend !== null) {
+        const key = [friend.uid, currentUser.uid].sort().join("");
+        setKey(key);
+       getMessage(friend.uid).then((data)=> {
+        if (data)  { 
+          // console.log(data);
+          data.sort((a, b)=>a.time-b.time);
+          setChat(data);
+        }
+        else  console.log(data);
+       });
+      }
+      
+  }, [friend]);
+
+  useEffect(()=> {
+    findFriends(currentUser.uid).then((data)=>setFriends(data));
+  }, []);
 
   useEffect(() => {
     const handleResize = () => {
@@ -65,6 +73,26 @@ const Message = () => {
     };
   }, []);
 
+
+  useEffect(()=>{
+    if (key) {
+      const q = query(collection(db, "chats", key, "chat"), orderBy('time')); 
+    const unsubscribe = onSnapshot(q, (snap)=>{
+      const chats = snap.docs.map((item)=>item.data()).sort((a,b)=>a.time-b.time);
+      setChat(chats);
+    })
+    return ()=> {
+      unsubscribe();
+    }
+  }
+  }, []);
+
+  useEffect(() => {
+    if (chatBoxRef.current) {
+      chatBoxRef.current.scrollIntoView({behaviour: "smooth"});
+    }
+  }, [chat]);
+
   return (
     <HStack w="100vw" h="90vh" maxH="90vh" spacing={0}>
       <VStack
@@ -75,47 +103,52 @@ const Message = () => {
         textAlign="left"
         display={width <= 450 ? (display ? "flex" : "none") : "flex"}
       >
-        <HStack w="100%" minH="7vh" pl="4" bg="blackAlpha.900">
+        <HStack
+          justify={"space-between"}
+          w="100%"
+          minH="7vh"
+          pl="4"
+          pr="4"
+          bg="blackAlpha.900"
+        >
           {" "}
           <Text fontSize="larger" color="white" fontWeight="extrabold">
             {" "}
             Messages{" "}
           </Text>{" "}
+          <UserFinder setFriend={setFriend} />
         </HStack>
-        {options.map((name, index) => (
+        {friends && friends.map((fren, index) => (
           <HStack key={index} w="95%" h="5vh" mb="2" justify="space-between">
             <Box h="5vh" w="5vh" bg="white" borderRadius="50%"></Box>
             <Button
               bg="white"
               onClick={() => {
-                setFriend(name);
-                if (width <= 450) {
-                  setDisplay((prev) => !prev);
-                }
+                setFriend(fren);
               }}
               w="85%"
               justifyContent="flex-start"
             >
-              {name}
+              {fren.name}
             </Button>
           </HStack>
         ))}
       </VStack>
 
       <VStack
-        justifyContent='flex-start'
-        gap='0'
-        h='90vh'
+        justifyContent="flex-start"
+        gap="0"
+        h="90vh"
         maxH="90vh"
         w="100vw"
         textAlign="left"
         display={width <= 450 ? (!display ? "flex" : "none") : "flex"}
       >
-        {friend !== "" ? (
+        {friend !== null ? (
           <>
             <HStack
               w="100%"
-              h='8vh'
+              h="8vh"
               maxH="8vh"
               pl="4"
               pr="4"
@@ -125,32 +158,35 @@ const Message = () => {
               {" "}
               <Text fontSize="larger" color="white" fontWeight="extrabold">
                 {" "}
-                {friend}{" "}
+                {friend ? friend.name : ""}{" "}
               </Text>{" "}
-              <Button variant='unstyled' bg='white' 
-                h='5vh'
-                w='5vh'
-                borderRadius={'50%'}
-                display={'flex'}
-                align='center'
+              <Button
+                variant="unstyled"
+                bg="white"
+                h="5vh"
+                w="5vh"
+                borderRadius={"50%"}
+                display={"flex"}
+                align="center"
                 onClick={() => {
-                  setFriend("");
-                  setDisplay((prev) => !prev);
-                }}><RiArrowGoBackFill size='4vh' /></Button>
-              
+                  setFriend(null);
+                }}
+              >
+                <RiArrowGoBackFill size="4vh" />
+              </Button>
             </HStack>
-            <VStack overflowY="auto" h='72vh'>
-              {messages.map((value, index) => (
+            <VStack overflowY="auto" h="72vh" w='100%' p='2' >
+              {chat && chat.map((value, index) => (
                 <HStack
                   key={index}
                   justifyContent={
-                    currentUser.displayName === value.name ? "right" : "left"
+                    currentUser.uid === value.sender ? "right" : "left"
                   }
                   spacing="2"
                   p="1"
                   w="100%"
                 >
-                  {currentUser.displayName !== value.name && (
+                  {currentUser.uid !== value.sender && (
                     <Box h="5vh" w="5vh" bg="black" borderRadius="50%"></Box>
                   )}
 
@@ -164,23 +200,30 @@ const Message = () => {
                     <Text>{value.text}</Text>
                   </Box>
 
-                  {currentUser.displayName === value.name && (
+                  {currentUser.uid === value.sender && (
                     <Box h="5vh" w="5vh" bg="black" borderRadius="50%"></Box>
                   )}
                 </HStack>
               ))}
             </VStack>
-            <HStack h={"10vh"} gap='0.5' w="100%">
+            <div ref={chatBoxRef}></div>
+            <HStack h={"10vh"} gap="0.5" w="100%">
+              <form onSubmit={(e)=> {
+                e.preventDefault();
+                sendMessage(text, friend.uid); 
+                setText("");  
+              }}
+              style={{width: '100%'}} >
               <Textarea
-                h='100%'
-                m='0'
+                h="100%"
+                m="0"
                 name="message"
                 overflowY="auto"
                 alignItems="left"
                 bg="blackAlpha.900"
                 color="white"
                 w="79%"
-                border='0'
+                border="0"
                 onChange={(e) => setText(e.target.value)}
                 value={text}
               ></Textarea>
@@ -190,9 +233,11 @@ const Message = () => {
                 fontWeight="black"
                 w="20%"
                 h="10vh"
+                type='submit'
               >
                 Send
               </Button>
+              </form>
             </HStack>
           </>
         ) : (

@@ -4,6 +4,7 @@ import App from "./App";
 import { ChakraProvider, ColorModeScript } from "@chakra-ui/react";
 import { AuthProvider } from "./Auth";
 import CountProvider from "./CountProvider";
+import StoreProvider from "./Store";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
@@ -12,7 +13,9 @@ root.render(
     <ChakraProvider>
       <AuthProvider>
         <CountProvider>
-          <App />
+          <StoreProvider>
+            <App />
+          </StoreProvider>
         </CountProvider>
       </AuthProvider>
     </ChakraProvider>
