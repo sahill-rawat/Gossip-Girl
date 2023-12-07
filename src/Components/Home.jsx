@@ -85,6 +85,7 @@ const Home = () => {
               >
                 <Heading>e-blast</Heading>
                 <Text
+                  css={{"&::-webkit-scrollbar":{display:"none"}}}
                   overflowY={"auto"}
                   fontSize="max('1rem', '19cqi')"
                   fontWeight="medium"

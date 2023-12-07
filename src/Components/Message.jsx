@@ -96,6 +96,7 @@ const Message = () => {
   return (
     <HStack w="100vw" h="90vh" maxH="90vh" spacing={0}>
       <VStack
+      css={{"&::-webkit-scrollbar":{display:"none"}}}
         overflowY="auto"
         h="100%"
         w={width <= 450 ? "100vw" : "35vw"}
@@ -175,7 +176,7 @@ const Message = () => {
                 <RiArrowGoBackFill size="4vh" />
               </Button>
             </HStack>
-            <VStack overflowY="auto" h="72vh" w='100%' p='2' >
+            <VStack css={{"&::-webkit-scrollbar":{display:"none"}}} overflowY="auto" h="72vh" w='100%' p='2' >
               {chat && chat.map((value, index) => (
                 <HStack
                   key={index}
@@ -205,8 +206,9 @@ const Message = () => {
                   )}
                 </HStack>
               ))}
+              <div ref={chatBoxRef}></div>
             </VStack>
-            <div ref={chatBoxRef}></div>
+            
             <HStack h={"10vh"} gap="0.5" w="100%">
               <form onSubmit={(e)=> {
                 e.preventDefault();

@@ -2,9 +2,11 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Home from "./Components/Home";
 import Login from "./Components/Login";
 import Header from "./Components/Header";
-import Message from "./Components/Message";
+// import Message from "./Components/Message";
 import Signup from "./Components/Signup";
 import Profile from "./Components/Profile";
+import Message from './Components/Inbox/Message';
+
 function App() {
   return (
     <Router>
