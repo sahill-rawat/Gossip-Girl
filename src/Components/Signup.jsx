@@ -111,6 +111,7 @@ import { doc, setDoc } from "firebase/firestore";
                 onChange={(e) => setPassword(e.target.value)}
               />
               <Input
+                p='1'
                 placeholder={"Avatar"}
                 type="file"
                 required
