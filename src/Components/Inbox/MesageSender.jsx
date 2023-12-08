@@ -1,22 +1,27 @@
-import { Button, HStack, Input, Textarea } from '@chakra-ui/react'
 import React, { useState } from 'react';
+import { FaPaperPlane } from "react-icons/fa";
+import { Button, HStack, Input, Textarea } from '@chakra-ui/react'
+import { useStore } from '../../Store';
+import { useAuth } from '../../Auth';
 
 const MesageSender = () => {
 
-    const [text, setText] = useState("");
+  const {userState,sendMessage} = useStore();
+  const {currentUser} = useAuth();
+  const [text, setText] = useState("");
 
   return (
-    <HStack bg='whiteAlpha.800' h='10%' w='100%'>
-        <form 
-            onSubmit={(e)=> { e.preventDefault(); setText(""); }}
-            style={{width: '100%', height:'100%'}} >
+    <HStack bg='whiteAlpha.800' h='10%' w='100%' p='1'>
+        <form
+            onSubmit={(e)=> { e.preventDefault(); sendMessage(userState, text); setText(""); }}
+            style={{width: '100%', height:'100%', display:'flex', flexDirection:'row', justifyContent:'space-between' }} >
             <Input
             h="100%"
             m="0"
             name="message"
             overflowY="auto"
             alignItems="left"
-            color="white"
+            color="black"
             w="74%"
             border="0"
             onChange={(e) => setText(e.target.value)}
@@ -30,7 +35,7 @@ const MesageSender = () => {
             h="98%"
             type='submit'
             >
-            Send
+            <FaPaperPlane/>
             </Button>
         </form>
     </HStack>

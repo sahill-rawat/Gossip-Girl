@@ -13,7 +13,10 @@ import {
   import { useAuth } from '../Auth';
 import { toast } from "react-hot-toast";
 import { useStore } from "../Store";
-// import ColorModeSwitcher from "../ColorModeSwitcher";
+import { db, storage } from "../firebase";
+import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
+import { updateProfile } from "firebase/auth";
+import { doc, setDoc } from "firebase/firestore";
 
   const Signup = () => {
 
@@ -21,21 +24,50 @@ import { useStore } from "../Store";
     const [name, setName] = useState();
     const [email, setEmail] = useState();
     const [password, setPassword] = useState();
+    const [file, setFile] = useState();
     const {signUp, updateName} = useAuth();
     const { addUser } = useStore();
 
   
-    const handleRegister = (e) => {
+    const handleRegister = async (e) => {
+
       e.preventDefault();
-      signUp(email, password, name)
-        .then((data) => {
-          addUser(name);
-          updateName(name);
-          navigate("/");
-        })
-        .catch((error) => {
-          toast.error(error.message);
-        })
+
+      try {
+        //Create user
+        const res = await signUp(email, password);
+  
+        //Create a unique image name
+        const date = new Date().getTime();
+        const storageRef = ref(storage, `${name + date}`);
+  
+        await uploadBytesResumable(storageRef, file).then(() => {
+          getDownloadURL(storageRef).then(async (downloadURL) => {
+            try {
+              //Update profile
+              await updateProfile(res.user, {
+                displayName:name,
+                photoURL: downloadURL,
+              });
+              //create user on firestore
+              await setDoc(doc(db, "users", res.user.uid), {
+                uid: res.user.uid,
+                displayName:name,
+                email,
+                photoURL: downloadURL,
+              });
+  
+              //create empty user chats on firestore
+              await setDoc(doc(db, "userChats", res.user.uid), {});
+              navigate("/");
+            } catch (err) {
+              console.log(err);
+            }
+          });
+        });
+      } catch (err) {
+        console.log(err);
+      }
     };
  
     useEffect(() => {
@@ -77,6 +109,13 @@ import { useStore } from "../Store";
                 required
                 focusBorderColor={"black"}
                 onChange={(e) => setPassword(e.target.value)}
+              />
+              <Input
+                placeholder={"Avatar"}
+                type="file"
+                required
+                focusBorderColor={"black"}
+                onChange={(e) => setFile(e.target.files[0])}
               />
   
               <Button

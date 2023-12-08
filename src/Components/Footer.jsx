@@ -4,8 +4,8 @@ import {
   Text,
   VStack,
 } from "@chakra-ui/react";
-import { IoArrowUpCircle } from "react-icons/io5";
 import React from "react";
+import { IoArrowUpCircle } from "react-icons/io5";
 
 const Footer = () => {
   return (

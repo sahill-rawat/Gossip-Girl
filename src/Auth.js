@@ -47,7 +47,7 @@ export const AuthProvider = ({ children }) => {
           });
     }
     
-    const signUp = (email, password, name) => {
+    const signUp = (email, password) => {
         // Returns the promise returned by createUserWithEmailAndPassword
         return createUserWithEmailAndPassword(auth, email, password);
       };

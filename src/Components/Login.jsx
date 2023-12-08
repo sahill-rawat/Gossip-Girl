@@ -6,11 +6,11 @@ import {
     Text,
     VStack,
   } from '@chakra-ui/react';
-  import React, { useEffect, useState } from 'react';
-  import { Link, useNavigate } from 'react-router-dom';
   // import MetaData from './Metadata';
   import { useAuth } from '../Auth.js';
-import { toast } from 'react-hot-toast';
+  import { toast } from 'react-hot-toast';
+  import React, { useEffect, useState } from 'react';
+  import { Link, useNavigate } from 'react-router-dom';
   
   const Login = () => {
   
