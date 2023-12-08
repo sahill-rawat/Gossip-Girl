@@ -85,7 +85,7 @@ import { doc, setDoc } from "firebase/firestore";
             w={["full", "96"]}
             m={"auto"}
           >
-            <Heading alignSelf={"center"}>DearDiary</Heading>
+            <Heading alignSelf={"center"}>GossipGirl</Heading>
             <Avatar alignSelf={"center"} boxSize={"32"} />
   
             <VStack>
