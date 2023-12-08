@@ -1,6 +1,6 @@
 import { db } from "../../firebase";
 import { useAuth } from "../../Auth";
-import img from "../../images/img.jpg";
+import dp from "../../images/dp.png";
 import React, { useState, useEffect } from "react";
 import { doc, onSnapshot } from "firebase/firestore";
 import { Box, HStack, Image, Text, VStack } from "@chakra-ui/react";
@@ -64,8 +64,8 @@ const { dispatch } = useStore();
                   borderRadius="50%"
                   objectFit="cover"
                   src={
-                    chat[1].userInfo.photoURL === ""
-                      ? { img }
+                    chat[1].userInfo.photoURL === null
+                      ? { dp }
                       : chat[1].userInfo.photoURL
                   }
                 />

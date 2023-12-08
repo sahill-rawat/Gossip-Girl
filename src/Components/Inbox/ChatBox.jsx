@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import Chat from './Chat';
-import img from '../../images/img.jpg'
+import dp from "../../images/dp.png";
 import MesageSender from './MesageSender';
 import { RiArrowGoBackFill } from "react-icons/ri";
 import { Heading, HStack, VStack, Image, Button, Text } from '@chakra-ui/react'
@@ -36,7 +36,7 @@ const ChatBox = ({flexR, setDisplay}) => {
       <>
       <HStack border='none' borderLeft='1px solid white' borderBottom='1px solid white' h='10%' w='100%' pl='4' pr='4' justify={'space-between'}>
             <HStack h='100%' w='80%' justify={'left'}>
-                <Image h='6vh' w='6vh' borderRadius='50%' objectFit='cover' src={userState?.user?.photoURL}/>
+                <Image h='6vh' w='6vh' borderRadius='50%' objectFit='cover' src={userState?.user?.photoURL === null ? dp : userState?.user?.photoURL}/>
                 <Heading fontSize={'large'}>{userState?.user?.displayName}</Heading>
             </HStack>
             <Button
