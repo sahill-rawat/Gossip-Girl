@@ -3,6 +3,7 @@ import SideBar from './SideBar';
 import ChatBox from './ChatBox';
 import { useState } from 'react';
 import { HStack, useBreakpointValue } from '@chakra-ui/react'
+import MetaData from '../Metadata';
 
 const Message = () => {
 
@@ -12,6 +13,7 @@ const Message = () => {
 
   return (
     <HStack h='90vh' w='100vw' backgroundColor='black' gap={0}>
+      <MetaData title='Inbox' />
         <SideBar flexR={sidebarFlex} setDisplay={setDisplay} />
         <ChatBox flexR={chatboxFlex} setDisplay={setDisplay} />
     </HStack>

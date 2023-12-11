@@ -46,7 +46,7 @@ const SearchBar = () => {
         { user &&
         (<HStack onClick={handleSelect} pl='1' pr='1' h='8vh' w='100%' justifyContent='flex-start'>
            <VStack h='100%' flex='1' align='center'>
-           <Image m='auto' h='5vh' w='5vh' borderRadius="50%" objectFit='cover' src={img} />
+           <Image m='auto' h='5vh' w='5vh' borderRadius="50%" objectFit='cover' src={user.photoURL} />
            </VStack>
             <VStack flex='5' pl='2' pr='2' gap='0' h='100%' overflow="hidden" align='flex-start' justifyContent="flex-start">
                 <Text fontWeight='black'>{user.displayName}</Text>

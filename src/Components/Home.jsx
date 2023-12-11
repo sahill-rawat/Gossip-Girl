@@ -3,6 +3,7 @@ import bg from "../images/bg.jpg";
 import { useAuth } from "../Auth";
 import React, { useState, useEffect } from "react";
 import { Box, Heading, Image, Stack, Text, VStack } from "@chakra-ui/react";
+import MetaData from "./Metadata";
 
 const Home = () => {
   const { currentUser } = useAuth();
@@ -36,6 +37,7 @@ const Home = () => {
 
   return (
     <Box>
+      <MetaData title={'GossipGirl'}/>
       <VStack
         h="90vh"
         bgImage={bg}

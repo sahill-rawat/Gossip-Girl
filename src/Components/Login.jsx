@@ -6,7 +6,7 @@ import {
     Text,
     VStack,
   } from '@chakra-ui/react';
-  // import MetaData from './Metadata';
+  import MetaData from './Metadata';
   import { useAuth } from '../Auth.js';
   import { toast } from 'react-hot-toast';
   import React, { useEffect, useState } from 'react';
@@ -46,7 +46,7 @@ import {
   
     return (
     <Container maxW={'container.xl'} h={'100vh'} p={'16'}>
-        {/* <MetaData title='Login'/> */}
+        <MetaData title='Login'/>
       <form>
         <VStack
           alignItems={'stretch'}

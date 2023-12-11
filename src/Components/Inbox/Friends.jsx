@@ -32,7 +32,7 @@ const { dispatch } = useStore();
     currentUser.uid && getChats();
   }, [currentUser.uid]);
 
-  chats && console.log(chats);
+  // chats && console.log(chats);
 
   return (
     <VStack

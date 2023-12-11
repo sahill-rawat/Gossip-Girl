@@ -9,9 +9,8 @@ import {
   } from "@chakra-ui/react";
   import React, { useEffect, useState } from "react";
   import { Link, useNavigate } from "react-router-dom";
-//   import MetaData from './Metadata';
+  import MetaData from './Metadata';
   import { useAuth } from '../Auth';
-import { toast } from "react-hot-toast";
 import { useStore } from "../Store";
 import { db, storage } from "../firebase";
 import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
@@ -24,7 +23,7 @@ import { doc, setDoc } from "firebase/firestore";
     const [name, setName] = useState();
     const [email, setEmail] = useState();
     const [password, setPassword] = useState();
-    const [file, setFile] = useState();
+    const [file, setFile] = useState(null);
     const {signUp, updateName} = useAuth();
     const { addUser } = useStore();
 
@@ -35,6 +34,12 @@ import { doc, setDoc } from "firebase/firestore";
 
       try {
         //Create user
+
+        if (file === null) {
+          alert("Please upload an image");
+          return;
+        }
+
         const res = await signUp(email, password);
   
         //Create a unique image name
@@ -76,8 +81,7 @@ import { doc, setDoc } from "firebase/firestore";
   
     return (
       <Container maxW={"container.xl"} h={"100vh"} p={"16"}>
-        {/* <ColorModeSwitcher /> */}
-        {/* <MetaData title='Signup'/> */}
+        <MetaData title='Signup'/>
         <form>
           <VStack
             alignItems={"stretch"}
