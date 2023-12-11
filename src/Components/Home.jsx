@@ -44,7 +44,7 @@ const Home = () => {
   const [posts, setPosts] = useState([
     {
       image: "https://64.media.tumblr.com/cba11899c60e343c63ea68fb495c0dd4/5dd5a93c6df071c3-97/s1280x1920/3f6af39620169cdfe0b3498150d7aca63dc9110a.png",
-      text: "spotted : Georgina in a coffee shop with Serena Van Der Woodsen. What are this two girls doing together? Is Dan aware that his wife is with his ex, and formerly best friend?",
+      text: "Georgina in a coffee shop with Serena Van Der Woodsen. What are this two girls doing together? Is Dan aware that his wife is with his ex, and formerly best friend?",
     },
     {
       image: "https://64.media.tumblr.com/890e666053c95b0552df4f0bd70feb40/1e882090d32c9081-5a/s1280x1920/a6b021b3c07a9de98816833011b0cf073730201d.png",
@@ -172,10 +172,10 @@ const Home = () => {
               justify="space-evenly"
               align={"center"}
               spacing="5"
-              h="75vh"
+              h={posts.image ? "75vh" : "50vh"}
               w="80vw"
             >
-              <Stack
+              {post.image && post.image != "" && <Stack
                 h={width >= 700 ? "70%" : "60%"}
                 w={width >= 700 ? "20%" : "50%"}
                 borderRadius="15px"
@@ -191,7 +191,8 @@ const Home = () => {
                   src={post.image}
                 ></Image>
               </Stack>
-              <VStack
+              }
+              {post.text && <VStack
                 w={width >= 700 ? "40%" : "80%"}
                 h={width >= 700 ? "40%" : "35%"}
                 align={"flex-start"}
@@ -207,7 +208,7 @@ const Home = () => {
                 >
                   {post.text}
                 </Text>
-              </VStack>
+              </VStack>}
             </Stack>
           ))}
         </VStack>

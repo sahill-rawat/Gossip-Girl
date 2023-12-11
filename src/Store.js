@@ -147,12 +147,13 @@ const StoreProvider = ({ children }) => {
 
   const post = async (text, image) => {
     try {
-      const downloadURL = await uploadImage(image);
+
+      const downloadURL = (image !== null) ? await uploadImage(image) : null;
       
       await updateDoc(doc(db, "posts", "all"), { 
         posts:arrayUnion({
         time: Timestamp.now(),
-        image: downloadURL.toString(),
+        image: downloadURL,
         text: text,
         uploadersUID: currentUser.uid
       })});
