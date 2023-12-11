@@ -24,7 +24,7 @@ import {
 import MetaData from "./Metadata";
 import { useStore } from "../Store";
 import { db } from "../firebase";
-import { doc, onSnapshot } from "firebase/firestore";
+import { doc, onSnapshot, orderBy } from "firebase/firestore";
 
 const Home = () => {
   const { currentUser } = useAuth();
@@ -37,7 +37,7 @@ const Home = () => {
     if ((text === null || text.trim() === "") && file === null) return;
     const res = await post(text, file);
     setFile(null);
-    setText(null);
+    setText("");
     console.log(res);
   };
 
@@ -70,11 +70,14 @@ const Home = () => {
   useEffect(() => {
     const getPosts = () => {
       const unsubscribe = onSnapshot(
-        doc(db, "posts", "all"),
+        doc(db, "posts", "all"), orderBy('time', 'asc'),
         (doc) => {
             const data = doc.data();
             console.log(data);
-            if (data)   setPosts(data.posts);
+            if (data)   { 
+              data.posts.sort((a, b)=>b.time-a.time)
+              setPosts(data.posts);
+            }
         }
       );
 
@@ -83,20 +86,6 @@ const Home = () => {
     getPosts();
   }, []);
 
-  // const posts = [
-  //   {
-  //     link: "https://64.media.tumblr.com/cba11899c60e343c63ea68fb495c0dd4/5dd5a93c6df071c3-97/s1280x1920/3f6af39620169cdfe0b3498150d7aca63dc9110a.png",
-  //     text: "spotted : Georgina in a coffee shop with Serena Van Der Woodsen. What are this two girls doing together? Is Dan aware that his wife is with his ex, and formerly best friend?",
-  //   },
-  //   {
-  //     link: "https://64.media.tumblr.com/890e666053c95b0552df4f0bd70feb40/1e882090d32c9081-5a/s1280x1920/a6b021b3c07a9de98816833011b0cf073730201d.png",
-  //     text: "serena van der woodsen having an unsual fight (who am i kidding) with her bestie blair waldorf. i thought you only fought tuesdays and saturdays, let’s add a friday too.",
-  //   },
-  //   {
-  //     link: "https://64.media.tumblr.com/e5d9c57fe76deebe064b8a9e08105cf1/a784be97ca02202c-73/s500x750/5c6f76ad0a2dffc0ed10e171308774dfb81b58b2.png",
-  //     text: "Lonely Boy headed Upper East, looking formal with Nate Archibald, have a new bromance just started? I think so. But what will Serena Van der Woodsen think about this? Her two options being friends makes it even more hard to choose. Dan or Nate? What a hard decision!",
-  //   },
-  // ];
 
   return (
     <Box>

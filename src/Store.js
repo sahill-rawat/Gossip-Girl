@@ -149,7 +149,7 @@ const StoreProvider = ({ children }) => {
     try {
       const downloadURL = await uploadImage(image);
       
-      await setDoc(doc(db, "posts", "all"), { 
+      await updateDoc(doc(db, "posts", "all"), { 
         posts:arrayUnion({
         time: Timestamp.now(),
         image: downloadURL.toString(),
