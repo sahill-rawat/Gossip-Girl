@@ -3,7 +3,7 @@ import { useAuth } from "../../Auth";
 import dp from "../../images/dp.png";
 import React, { useState, useEffect } from "react";
 import { doc, onSnapshot } from "firebase/firestore";
-import { Box, HStack, Image, Text, VStack } from "@chakra-ui/react";
+import { HStack, Image, Text, VStack } from "@chakra-ui/react";
 import { useStore } from "../../Store";
 
 const Friends = ({ setDisplay }) => {

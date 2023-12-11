@@ -1,13 +1,11 @@
 import React, { useState } from 'react';
 import { FaPaperPlane } from "react-icons/fa";
-import { Button, HStack, Input, Textarea } from '@chakra-ui/react'
+import { Button, HStack, Input } from '@chakra-ui/react'
 import { useStore } from '../../Store';
-import { useAuth } from '../../Auth';
 
 const MesageSender = () => {
 
   const {userState,sendMessage} = useStore();
-  const {currentUser} = useAuth();
   const [text, setText] = useState("");
 
   return (

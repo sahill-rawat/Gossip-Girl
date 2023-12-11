@@ -12,7 +12,7 @@ const SideBar = ({flexR,setDisplay}) => {
   const getFirstName = (name) => {
     let firstName = "";
     for (let i=0; i<name.length; i++) {
-      if (name[i] == ' ') return firstName;
+      if (name[i] === ' ') return firstName;
       firstName += name[i];
     }
     return firstName;

@@ -1,13 +1,11 @@
 import React, {useEffect, useState} from 'react';
 import { Text, HStack, Input, VStack, Image } from '@chakra-ui/react';
 import { useStore } from '../../Store';
-import img from '../../images/img.jpg';
 
 const SearchBar = () => {
 
   const [searchQuery, setSearchQuery] = useState(""); 
   const [user, setUser] = useState(null);
-  const [err, setErr] = useState(null);
   const { findUserByName, selectUser } = useStore();
 
   useEffect(()=> {

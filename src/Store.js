@@ -5,7 +5,7 @@ import React, {
   useEffect,
   useReducer,
 } from "react";
-import { db, app, auth, storage } from "./firebase";
+import { db, auth, storage } from "./firebase";
 import {
   collection,
   doc,
@@ -20,7 +20,6 @@ import {
   Timestamp,
 } from "firebase/firestore";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
-import { updateProfile } from "firebase/auth";
 
 const StoreContext = createContext();
 export const useStore = () => useContext(StoreContext);
@@ -55,34 +54,19 @@ const StoreProvider = ({ children }) => {
 
   const [userState, dispatch] = useReducer(chatReducer, stateInit);
 
-  const updatePFP = async (file) => {
-    if (file) {
-      try {
-        const date = new Date().getTime();
-        const storageRef = ref(storage, `${currentUser.displayName + date}`);
-
-        await uploadBytes(storageRef, file).then((snapshot) => {
-          getDownloadURL(snapshot.ref).then(async (downloadURL) => {
-            await updateProfile(currentUser, {
-              photoURL: downloadURL,
-            });
-
-            await updateDoc(doc(db, "users", currentUser.uid), {
-              photoURL: downloadURL,
-            });
-
-            // await updateDoc(doc(db, "usersChats", currentUser.uid), where("uid" === currentUser.uid), {
-            //     photoURL: downloadURL,
-            //   }
-            // );
-          });
-        });
-      } catch (e) {
-        console.log(e);
-      }
+  const uploadImage = async (file) => {
+    try {
+      const date = new Date().getTime();
+      const storageRef = ref(storage, `${currentUser.displayName + date + "post"}`);
+      const snapshot = await uploadBytes(storageRef, file);
+      const downloadURL = await getDownloadURL(snapshot.ref);
+      return downloadURL;
+    } catch (e) {
+      console.error(e);
+      return "";
     }
   };
-
+  
   const findUserByName = async (name) => {
 
     const usersRef = collection(db, "users");
@@ -161,6 +145,26 @@ const StoreProvider = ({ children }) => {
     }
   };
 
+  const post = async (text, image) => {
+    try {
+      const downloadURL = await uploadImage(image);
+      
+      await setDoc(doc(db, "posts", "all"), { 
+        posts:arrayUnion({
+        time: Timestamp.now(),
+        image: downloadURL.toString(),
+        text: text,
+        uploadersUID: currentUser.uid
+      })});
+  
+      return true; // Indicate success
+    } catch (error) {
+      console.error(error);
+      return false; // Indicate failure
+    }
+  };
+  
+
   useEffect(() => {
     //returns function through which we can unsubscribe from onAuthStateChanged event
     const unsubscribe = auth.onAuthStateChanged((user) => {
@@ -175,7 +179,7 @@ const StoreProvider = ({ children }) => {
     selectUser,
     userState,
     dispatch,
-    updatePFP
+    post
   };
 
   return (
