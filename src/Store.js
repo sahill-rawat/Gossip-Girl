@@ -54,6 +54,26 @@ const StoreProvider = ({ children }) => {
 
   const [userState, dispatch] = useReducer(chatReducer, stateInit);
 
+
+  const getAllUsers = async() => {
+    
+    try {
+      var allUsers = [];
+    const res = await getDocs(collection(db, 'users'));
+
+    res.forEach((doc)=>{
+      if (doc.data()?.email != currentUser.email) {
+        allUsers.push(doc.data());
+      }
+    });
+    return allUsers;
+  }
+  catch(e) {
+    console.log(e);
+    return null;
+  }
+  };
+
   const uploadImage = async (file) => {
     try {
       const date = new Date().getTime();
@@ -102,6 +122,7 @@ const StoreProvider = ({ children }) => {
         ? currentUser.uid + user.uid
         : user.uid + currentUser.uid;
     try {
+
       await createDoc("chats", key, { message: [] });
 
       await updateDoc(doc(db, "userChats", user.uid), {
@@ -180,7 +201,8 @@ const StoreProvider = ({ children }) => {
     selectUser,
     userState,
     dispatch,
-    post
+    post,
+    getAllUsers
   };
 
   return (

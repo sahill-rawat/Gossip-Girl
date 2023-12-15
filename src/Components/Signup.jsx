@@ -34,7 +34,7 @@ const Signup = () => {
         alert("Please upload an image");
         return;
       }
-
+      setName(name.trim());
       const res = await signUp(email, password);
 
       //Create a unique image name

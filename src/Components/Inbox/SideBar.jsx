@@ -29,7 +29,7 @@ const SideBar = ({flexR,setDisplay}) => {
                 <Heading fontSize={'large'}>{getFirstName(currentUser?.displayName)}</Heading>
             </HStack>
         </HStack>
-        <SearchBar/>
+        <SearchBar setDisplay={setDisplay} />
         <Friends setDisplay={setDisplay}/>
     </VStack>
   )
